@@ -1,0 +1,21 @@
+h1 {
+    font-family: 'Rubik Mono One', sans-serif;
+}
+
+body {
+    font-family: 'Nova Square', sans-serif;
+    background-image: url(../images/polaroid_@2X.png)
+}
+
+.top-btn {
+    margin: 5px;
+}
+
+.card-text {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.card {
+    margin-bottom: 5px;
+}

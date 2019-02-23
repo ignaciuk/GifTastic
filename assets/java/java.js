@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var shapes = ["circle", "triangle", "square", "hexagon", "dodecahedron", "cube"];
+    var shapes = ["circle", "triangle", "square", "dodecahedron", "cube", "hypercube"];
 
     //event listener for click on add shape button
     $("#add-shape-btn").on("click", function() {
@@ -18,7 +18,7 @@ $(document).ready(function() {
         $("#buttons-display").empty();
         for (var i = 0; i < shapes.length; i++) {
             var a = $("<button>");
-            a.addClass("shape-btn btn btn-outline-dark");
+            a.addClass("shape-btn btn btn-light btn-outline-dark top-btn");
             a.attr("data-name", shapes[i]);
             a.text(shapes[i]);
             $("#buttons-display").append(a);
@@ -28,19 +28,21 @@ $(document).ready(function() {
     $(document).on("click", ".shape-btn", function(){
         var shapeQuery = $(this).attr("data-name");
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + shapeQuery + "&api_key=0w8jsNW2s4LjeemTJe6MZblKQPPOr3Qz&limit=10";
-        console.log(queryURL);
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function(response) {
-            console.log(response);
             for (var i = 0; i < response.data.length; i++){
-                var gifDiv = $("<div class='card card-body'>");
+                console.log(response);
+                var gifDiv = $("<div class='card'>");
+                var title = response.data[i].title;
+                var showTitle = $("<p class='card-header'>").text("Title: " + title);
+                gifDiv.append(showTitle);
                 var rating = response.data[i].rating;
-                var showRating = $("<p>").text("Rating: " + rating);
+                var showRating = $("<p class='card-body card-text'>").text("Rating: " + rating);
                 gifDiv.append(showRating);
                 var gifURL = response.data[i].images.fixed_height_still.url;
-                var gifFixedHeight = $("<img class='gif'>").attr("src", gifURL);
+                var gifFixedHeight = $("<img class='card-body gif'>").attr("src", gifURL);
                 gifFixedHeight.attr("data-still", gifURL);
                 gifFixedHeight.attr("data-animate", response.data[i].images.fixed_height.url);
                 gifFixedHeight.attr("data-state", "still");
@@ -50,6 +52,18 @@ $(document).ready(function() {
         });
 
     });
+
+    $(document).on("click", ".gif", function(){
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+      });
+
     generateButtons();
 
     // function displayShapeGifs() {
